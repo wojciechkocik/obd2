@@ -21,7 +21,7 @@ public class Main{
         }
 
         try {
-            CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier("/dev/rfcomm0");
+            CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier("COM5");
             SerialPort serialPort = (SerialPort) portIdentifier.open("NameOfConnection-whatever", 0);
             System.out.println("asf");
         } catch (NoSuchPortException e) {

@@ -16,9 +16,11 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
     mavenCentral()
+}
 
-    maven {
-        url "http://repo.opennms.org/maven2/"
+repositories {
+    flatDir {
+        dirs 'libs'
     }
 }
 
@@ -29,9 +31,12 @@ dependencies {
     compile 'com.github.pires:obd-java-api:1.0'
 
     // https://mvnrepository.com/artifact/org.rxtx/rxtx
-    //compile group: 'org.rxtx', name: 'rxtx', version: '2.2pre2'
 
+    //windows
+    compile group: 'org.rxtx', name: 'rxtx', version: '2.1.7'
 
+    //unix
+    //compile name: 'RXTXcomm-2.2pre2'
 
 
     // Declare the dependency for your favourite test framework you want to use in your tests.
