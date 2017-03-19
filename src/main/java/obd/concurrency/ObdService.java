@@ -36,8 +36,8 @@ public class ObdService {
             //hack for waiting for inputstream
             long start = System.currentTimeMillis();
             while (serialPort.getInputStream().available() == 0){
-                if(System.currentTimeMillis() - start > 1000){
-                    return;
+                if(System.currentTimeMillis() - start > 100){
+                    break;
                 }
             }
 

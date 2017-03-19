@@ -25,9 +25,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         String port;
-        if(args.length > 0){
+        if (args.length > 0) {
             port = args[0];
-        }else {
+        } else {
             log.info("Enter binded com port:");
             port = scanner.next();
         }
