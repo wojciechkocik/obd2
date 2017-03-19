@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import obd.ObdCommandJob;
 import obd.ReaderObserver;
 
-import java.io.IOException;
 import java.util.concurrent.*;
 
 /**
@@ -30,7 +29,7 @@ public class ObdService {
 
     private SerialPort serialPort;
 
-    private synchronized ReaderObserver read(){
+    private ReaderObserver read(){
         return job -> {
             job.getObdCommand().run(serialPort.getInputStream(), serialPort.getOutputStream());
 
@@ -41,9 +40,18 @@ public class ObdService {
                     return;
                 }
             }
-            log.info(job.getObdCommand().getFormattedResult());
+
+            String name = job.getObdCommand().getName();
+            String data = job.getObdCommand().getFormattedResult();
+            System.out.format("%35s%10s", name, data);
+            System.out.println();
+
         };
-    };
+    }
+
+    private String outputString(ObdCommandJob job){
+        return job.getObdCommand().getFormattedResult() + "\t\t<-- \t " + job.getObdCommand().getName();
+    }
 
     public ObdService(String port) {
 
@@ -59,7 +67,7 @@ public class ObdService {
     public void start() {
         consumerExecutor.execute(consumer);
 
-       // initConnection();
+        initConnection();
         producerExecutorService.scheduleAtFixedRate(producer, 0, 1, TimeUnit.SECONDS);
     }
 
@@ -75,7 +83,6 @@ public class ObdService {
     }
 
     private void initConnection() {
-        // Let's configure the connection.
         log.debug("Queueing jobs for connection configuration..");
         queueJob(new ObdResetCommand());
 
@@ -87,22 +94,10 @@ public class ObdService {
         }
 
         queueJob(new EchoOffCommand());
-
-    /*
-     * Will read second-time based on tests.
-     *
-     * TODO this can be done w/o having to queue jobs by just issuing
-     * command.run(), command.getResult() and validate the result.
-     */
         queueJob(new EchoOffCommand());
         queueJob(new LineFeedOffCommand());
         queueJob(new TimeoutCommand(62));
-
-        // Get protocol from preferences
-//        final String protocol = sharedPreferences.getString(Config.PROTOCOLS_LIST_KEY, "AUTO");
         queueJob(new SelectProtocolCommand(ObdProtocols.valueOf("AUTO")));
-
-        // Job for returning dummy data
         queueJob(new AmbientAirTemperatureCommand());
         log.debug("Initialization jobs queued.");
     }

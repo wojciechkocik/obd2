@@ -2,7 +2,9 @@ package obd.concurrency;
 
 import com.github.pires.obd.commands.ObdCommand;
 import com.github.pires.obd.commands.SpeedCommand;
+import com.github.pires.obd.commands.engine.MassAirFlowCommand;
 import com.github.pires.obd.commands.engine.RPMCommand;
+import com.github.pires.obd.commands.engine.ThrottlePositionCommand;
 import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand;
 import lombok.extern.slf4j.Slf4j;
 import obd.ObdCommandJob;
@@ -28,6 +30,8 @@ class ObdCommandsProducer extends Thread {
         queueJob(new SpeedCommand());
         queueJob(new RPMCommand());
         queueJob(new EngineCoolantTemperatureCommand());
+        queueJob(new MassAirFlowCommand());
+        queueJob(new ThrottlePositionCommand());
     }
 
     @Override
