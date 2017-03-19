@@ -17,6 +17,11 @@ sudo reboot
 ```sh
 hcitool scan
 ```
+or
+```sh
+sudo apt-get install bluez-tools
+bt-device -l
+```
 5. Bind your device to rxtx 
 ```sh
 rfcomm bind 0 34:D2:12:02:82:72
