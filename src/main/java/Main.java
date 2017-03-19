@@ -15,12 +15,13 @@ public class Main{
         System.out.print(new Date());
         Enumeration ports = CommPortIdentifier.getPortIdentifiers();
 
+
         while(ports.hasMoreElements()){
             System.out.println(((CommPortIdentifier)ports.nextElement()).getName());
         }
 
         try {
-            CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier("COM5");
+            CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier("/dev/rfcomm0");
             SerialPort serialPort = (SerialPort) portIdentifier.open("NameOfConnection-whatever", 0);
             System.out.println("asf");
         } catch (NoSuchPortException e) {

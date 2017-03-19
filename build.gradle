@@ -29,7 +29,7 @@ dependencies {
     compile 'com.github.pires:obd-java-api:1.0'
 
     // https://mvnrepository.com/artifact/org.rxtx/rxtx
-    compile group: 'org.rxtx', name: 'rxtx', version: '2.2pre2'
+    //compile group: 'org.rxtx', name: 'rxtx', version: '2.2pre2'
 
 
 
