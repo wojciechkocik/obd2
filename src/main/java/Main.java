@@ -1,33 +1,40 @@
 import gnu.io.CommPortIdentifier;
-import gnu.io.NoSuchPortException;
-import gnu.io.PortInUseException;
-import gnu.io.SerialPort;
+import lombok.extern.slf4j.Slf4j;
+import obd.concurrency.ObdService;
 
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Scanner;
 
 /**
  * Created by Wojciech on 18.03.2017.
  */
-public class Main{
+@Slf4j
+public class Main {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.print(new Date());
         Enumeration ports = CommPortIdentifier.getPortIdentifiers();
 
-
-        while(ports.hasMoreElements()){
-            System.out.println(((CommPortIdentifier)ports.nextElement()).getName());
+        log.info("Available ports:");
+        while (ports.hasMoreElements()) {
+            String portName = ((CommPortIdentifier) ports.nextElement()).getName();
+            log.info(String.format("--> %s", portName));
         }
 
-        try {
-            CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier("COM5");
-            SerialPort serialPort = (SerialPort) portIdentifier.open("NameOfConnection-whatever", 0);
-            System.out.println("asf");
-        } catch (NoSuchPortException e) {
-            e.printStackTrace();
-        } catch (PortInUseException e) {
-            e.printStackTrace();
+        Scanner scanner = new Scanner(System.in);
+
+        String port;
+        if(args.length > 0){
+            port = args[0];
+        }else {
+            log.info("Enter binded com port:");
+            port = scanner.next();
         }
+        log.info(String.format("Port %s was chosen", port));
+
+        log.info("Starting service...");
+        ObdService obdService = new ObdService(port);
+        obdService.start();
     }
 }
